@@ -1,0 +1,137 @@
+MPASM  5.39                         INPUT.ASM   9-21-2018  8:18:38         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000001            00001 TMR0    EQU     1
+  00000002            00002 ZEROBIT EQU     2
+  00000003            00003 STATUS  EQU     3
+  00000005            00004 PORTA   EQU     5
+  00000006            00005 PORTB   EQU     6
+  00000081            00006 OPTION_R EQU    81H
+  00000085            00007 TRISA   EQU     85H
+  00000086            00008 TRISB   EQU     86H
+  0000000C            00009 COUNT   EQU     0CH
+                      00010 
+                      00011 
+Warning[205]: Found directive in column 1. (LIST)
+                      00012 LIST P=16f84a
+Warning[205]: Found directive in column 1. (ORG)
+0000                  00013 ORG 0
+Warning[203]: Found opcode in column 1. (GOTO)
+0000   2807           00014 GOTO START
+                      00015 
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3FF0           00016 __CONFIG H'3FF0'
+                      00017 
+                      00018 
+0001   0181           00019 DELAY5  CLRF    TMR0
+0002   0801           00020 LOOPA   MOVF    TMR0,W
+0003   3C20           00021         SUBLW   .32
+0004   1D03           00022         BTFSS   STATUS,ZEROBIT
+0005   2802           00023         GOTO    LOOPA
+0006   3400           00024         RETLW   0
+                      00025 
+                      00026 
+0007   1683           00027 START   BSF     STATUS,5
+0008   301F           00028         MOVLW   B'00011111'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0009   0085           00029         MOVWF   TRISA
+                      00030 
+000A   3000           00031         MOVLW   B'00000000'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000B   0086           00032         MOVWF   TRISB
+                      00033 
+000C   3007           00034         MOVLW   B'00000111'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000D   0081           00035         MOVWF   OPTION_R
+                      00036 
+000E   1283           00037         BCF     STATUS,5
+000F   0185           00038         CLRF    PORTA
+0010   0186           00039         CLRF    PORTB
+                      00040 
+                      00041 
+                      00042 ;----------------------------------
+                      00043 ;tO DISPLAY FILE AND COUNT TO ZERO
+                      00044 
+0011   3005           00045         MOVLW   .5
+0012   008C           00046         MOVWF   COUNT
+MPASM  5.39                         INPUT.ASM   9-21-2018  8:18:38         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00047 
+0013   1805           00048 BEGIN   BTFSC   PORTA,0
+0014   2813           00049         GOTO    BEGIN
+0015   2816           00050         GOTO    SEQ1
+                      00051 
+0016   3055           00052 SEQ1    MOVLW   B'01010101'
+0017   0086           00053         MOVWF   PORTB
+0018   2001           00054         CALL    DELAY5
+0019   30AA           00055         MOVLW   B'10101010'
+001A   0086           00056         MOVWF   PORTB
+001B   2001           00057         CALL    DELAY5
+001C   3000           00058         MOVLW   B'00000000'
+001D   0086           00059         MOVWF   PORTB
+Message[305]: Using default destination of 1 (file).
+001E   0B8C           00060         DECFSZ  COUNT
+001F   2816           00061         GOTO    SEQ1
+0020   2813           00062         GOTO    BEGIN
+                      00063 
+                      00064 ;       MOVLW   .5
+                      00065 ;       MOVWF   COUNT
+                      00066 ;
+                      00067 ;SEQ2   MOVLW   B'00001111'
+                      00068 ;       MOVWF   PORTB
+                      00069 ;       CALL    DELAY5
+                      00070 ;       MOVLW   B'11110000'
+                      00071 ;       MOVWF   PORTB
+                      00072 ;       CALL    DELAY5
+                      00073 ;       DECFSZ  COUNT
+                      00074 ;       GOTO    SEQ2
+                      00075 ;       GOTO    BEGIN
+                      00076 
+Warning[205]: Found directive in column 1. (END)
+                      00077 END
+MPASM  5.39                         INPUT.ASM   9-21-2018  8:18:38         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BEGIN                             00000013
+COUNT                             0000000C
+DELAY5                            00000001
+LOOPA                             00000002
+OPTION_R                          00000081
+PORTA                             00000005
+PORTB                             00000006
+SEQ1                              00000016
+START                             00000007
+STATUS                            00000003
+TMR0                              00000001
+TRISA                             00000085
+TRISB                             00000086
+ZEROBIT                           00000002
+__16F84A                          00000001
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX X--------------- ----------------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:    33
+Program Memory Words Free:   991
+
+
+Errors   :     0
+Warnings :     5 reported,     0 suppressed
+Messages :     4 reported,     0 suppressed
+
+
